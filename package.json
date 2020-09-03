@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "@myrotvorets/facex-base": "^1.0.1",
-    "sharp": "^0.25.4"
+    "sharp": "^0.25.4 || ^0.26.0"
   },
   "dependencies": {},
   "repository": {
