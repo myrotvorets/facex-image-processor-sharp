@@ -8,9 +8,10 @@ interface ImageMeta {
 }
 
 export class ImageProcessorSharp implements IImageProcessor {
+    // eslint-disable-next-line class-methods-use-this
     public async process(stream: NodeJS.ReadableStream): Promise<string> {
-        const img = this._loadImage(stream);
-        const meta = await this._extractImageMeta(img);
+        const img = ImageProcessorSharp._loadImage(stream);
+        const meta = await ImageProcessorSharp._extractImageMeta(img);
 
         const flag = !meta.isJPEG || meta.chromaSubsampling !== '4:2:0' || meta.isProgressive;
         if (flag) {
@@ -21,22 +22,22 @@ export class ImageProcessorSharp implements IImageProcessor {
         return buf.toString('base64');
     }
 
-    private _loadImage(stream: NodeJS.ReadableStream): Sharp {
+    private static _loadImage(stream: NodeJS.ReadableStream): Sharp {
         const img = sharp({ failOnError: false, sequentialRead: true });
         stream.pipe(img);
         return img;
     }
 
-    private _extractImageMeta(img: Sharp): Promise<ImageMeta> {
-        return img
-            .metadata()
-            .then(
-                (meta): ImageMeta => ({
-                    isJPEG: meta.format === 'jpeg',
-                    chromaSubsampling: meta.chromaSubsampling || '',
-                    isProgressive: !!meta.isProgressive,
-                }),
-            )
-            .catch((e: Error) => Promise.reject(new BadImageError(e.message)));
+    private static async _extractImageMeta(img: Sharp): Promise<ImageMeta> {
+        try {
+            const meta = await img.metadata();
+            return {
+                isJPEG: meta.format === 'jpeg',
+                chromaSubsampling: meta.chromaSubsampling || '',
+                isProgressive: !!meta.isProgressive,
+            };
+        } catch (e) {
+            return Promise.reject(new BadImageError((e as Error).message));
+        }
     }
 }
