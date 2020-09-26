@@ -37,7 +37,7 @@ export class ImageProcessorSharp implements IImageProcessor {
                 isProgressive: !!meta.isProgressive,
             };
         } catch (e) {
-            return Promise.reject(new BadImageError((e as Error).message));
+            throw new BadImageError((e as Error).message);
         }
     }
 }
