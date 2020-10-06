@@ -22,7 +22,7 @@
     "@myrotvorets/eslint-config-myrotvorets-ts": "^1.1.0",
     "@myrotvorets/facex-base": "^1.1.2",
     "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.2",
+    "@types/node": "^14.11.5",
     "@types/sharp": "^0.26.0",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "eslint": "^7.10.0",
