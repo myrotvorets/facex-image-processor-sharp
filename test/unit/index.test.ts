@@ -39,8 +39,8 @@ describe('ImageProcessorSharp', () => {
         return expect(processor.process(stream))
             .resolves.toBe('')
             .then(() => {
-                expect(mockJpeg).not.toBeCalled();
-                expect(mockToBuffer).toBeCalled();
+                expect(mockJpeg).not.toHaveBeenCalled();
+                expect(mockToBuffer).toHaveBeenCalled();
                 return Promise.resolve();
             });
     });
@@ -58,8 +58,8 @@ describe('ImageProcessorSharp', () => {
         return expect(processor.process(stream))
             .resolves.toBe('')
             .then(() => {
-                expect(mockJpeg).toBeCalledWith({ progressive: false, chromaSubsampling: '4:2:0' });
-                expect(mockToBuffer).toBeCalled();
+                expect(mockJpeg).toHaveBeenCalledWith({ progressive: false, chromaSubsampling: '4:2:0' });
+                expect(mockToBuffer).toHaveBeenCalled();
                 return Promise.resolve();
             });
     });
