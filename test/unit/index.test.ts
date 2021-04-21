@@ -41,7 +41,7 @@ describe('ImageProcessorSharp', () => {
             .then(() => {
                 expect(mockJpeg).not.toHaveBeenCalled();
                 expect(mockToBuffer).toHaveBeenCalled();
-                return Promise.resolve();
+                return true;
             });
     });
 
@@ -60,7 +60,7 @@ describe('ImageProcessorSharp', () => {
             .then(() => {
                 expect(mockJpeg).toHaveBeenCalledWith({ progressive: false, chromaSubsampling: '4:2:0' });
                 expect(mockToBuffer).toHaveBeenCalled();
-                return Promise.resolve();
+                return true;
             });
     });
 });
