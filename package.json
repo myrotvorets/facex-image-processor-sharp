@@ -48,5 +48,8 @@
   "bugs": {
     "url": "https://github.com/myrotvorets/facex-image-processor-sharp/issues"
   },
-  "homepage": "https://github.com/myrotvorets/facex-image-processor-sharp#readme"
+  "homepage": "https://github.com/myrotvorets/facex-image-processor-sharp#readme",
+  "engines": {
+    "npm": ">=7"
+  }
 }
