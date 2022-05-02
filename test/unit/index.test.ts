@@ -5,11 +5,13 @@ import { ImageProcessorSharp } from '../../lib';
 const mockMetadata = jest.fn();
 const mockJpeg = jest.fn();
 const mockToBuffer = jest.fn();
+const mockRotate = jest.fn();
 
 jest.mock('sharp', () => {
     return jest.fn().mockImplementation(() => ({
         metadata: mockMetadata,
         jpeg: mockJpeg,
+        rotate: mockRotate,
         toBuffer: mockToBuffer,
     }));
 });
@@ -39,6 +41,7 @@ describe('ImageProcessorSharp', () => {
         return expect(processor.process(stream))
             .resolves.toBe('')
             .then(() => {
+                expect(mockRotate).toHaveBeenCalled();
                 expect(mockJpeg).not.toHaveBeenCalled();
                 expect(mockToBuffer).toHaveBeenCalled();
                 return true;
@@ -58,6 +61,7 @@ describe('ImageProcessorSharp', () => {
         return expect(processor.process(stream))
             .resolves.toBe('')
             .then(() => {
+                expect(mockRotate).toHaveBeenCalled();
                 expect(mockJpeg).toHaveBeenCalledWith({ progressive: false, chromaSubsampling: '4:2:0' });
                 expect(mockToBuffer).toHaveBeenCalled();
                 return true;

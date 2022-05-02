@@ -18,6 +18,7 @@ export class ImageProcessorSharp implements IImageProcessor {
             img.jpeg({ progressive: false, chromaSubsampling: '4:2:0' });
         }
 
+        img.rotate();
         const buf = await img.toBuffer();
         return buf.toString('base64');
     }
