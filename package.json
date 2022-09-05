@@ -31,7 +31,7 @@
     "jest-github-actions-reporter": "^1.0.3",
     "jest-sonar-reporter": "^2.0.0",
     "merge": "^2.1.1",
-    "sharp": "^0.30.0",
+    "sharp": "^0.31.0",
     "ts-jest": "^28.0.0",
     "typescript": "^4.1.3"
   },
