@@ -12,6 +12,9 @@ on:
 env:
   SONARSCANNER: "true"
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: SonarCloud Scan
@@ -20,48 +23,12 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name && github.event.sender.login != 'dependabot[bot]' ||
       github.event_name == 'push' && !contains(github.event.head_commit.message, '[ci skip]')
+    permissions:
+      contents: read
+      packages: read
     steps:
-      - name: Check out the source code
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3.1.0
+      - name: Run SonarCloud analysis
+        uses: myrotvorets/composite-actions/node-sonarscan@master
         with:
-          fetch-depth: 0
-
-      - name: Set up Node.js environment
-        uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
-        with:
-          node-version: lts/*
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
           registry-url: https://npm.pkg.github.com
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run postinstall scripts
-        run: npm rebuild && npm run prepare --if-present
-
-      - name: Run tests
-        run: npm test
-        env:
-          COLLECT_COVERAGE: "1"
-
-      - name: Retrieve information from package.json
-        uses: myrotvorets/info-from-package-json-action@8e669c68fee193af17ffe3c9e6a028acd6616768 # tag=1.2.0
-        id: ver
-
-      - name: Fix paths in test-report.xml
-        run: sed -i "s@$(pwd)@/github/workspace@g" test-report.xml
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectName=${{ steps.ver.outputs.packageName }}
-            -Dsonar.projectVersion=${{ steps.ver.outputs.packageVersion }}
-            -Dsonar.links.homepage=${{ steps.ver.outputs.packageHomepage }}
-            -Dsonar.links.issue=${{ steps.ver.outputs.packageBugsUrl }}
-            -Dsonar.links.scm=${{ steps.ver.outputs.packageScmUrl }}
