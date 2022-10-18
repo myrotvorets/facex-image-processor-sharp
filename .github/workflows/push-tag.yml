@@ -12,6 +12,9 @@ jobs:
   build:
     name: Build and test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Build and test
         uses: myrotvorets/composite-actions/build-test-nodejs@master
