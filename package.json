@@ -33,7 +33,7 @@
     "merge": "^2.1.1",
     "sharp": "^0.31.0",
     "ts-jest": "^29.0.0",
-    "typescript": "^4.1.3"
+    "typescript": "^5.0.0"
   },
   "peerDependencies": {
     "@myrotvorets/facex-base": "^1.0.1 || ^2.0.0",
