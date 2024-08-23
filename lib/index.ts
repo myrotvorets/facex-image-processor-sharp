@@ -34,7 +34,7 @@ export class ImageProcessorSharp implements IImageProcessor {
             const meta = await img.metadata();
             return {
                 isJPEG: meta.format === 'jpeg',
-                chromaSubsampling: meta.chromaSubsampling || '',
+                chromaSubsampling: meta.chromaSubsampling ?? '',
                 isProgressive: !!meta.isProgressive,
             };
         } catch (e) {
