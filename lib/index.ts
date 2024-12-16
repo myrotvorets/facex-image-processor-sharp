@@ -8,7 +8,6 @@ interface ImageMeta {
 }
 
 export class ImageProcessorSharp implements IImageProcessor {
-    // eslint-disable-next-line class-methods-use-this
     public async process(stream: NodeJS.ReadableStream): Promise<string> {
         const img = ImageProcessorSharp._loadImage(stream);
         const meta = await ImageProcessorSharp._extractImageMeta(img);
