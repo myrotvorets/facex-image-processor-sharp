@@ -1,27 +1,31 @@
-import { createReadStream } from 'fs';
-import { join } from 'path';
+import { createReadStream } from 'node:fs';
+import { join } from 'node:path';
+import { equal, rejects } from 'node:assert/strict';
 import { BadImageError } from '@myrotvorets/facex-base';
+import { describe, it } from 'node:test';
 import { ImageProcessorSharp } from '../../lib';
 
-describe('ImageProcessorSharp', () => {
+void describe('ImageProcessorSharp', async () => {
     const processor = new ImageProcessorSharp();
 
-    it('should throw BadImageError if the image is bad', () => {
+    await it('should throw BadImageError if the image is bad', async () => {
         const stream = createReadStream(join(__dirname, 'bad-image.jpeg'));
-        return expect(processor.process(stream)).rejects.toThrow(BadImageError);
+        await rejects(processor.process(stream), BadImageError);
     });
 
-    it('should not change good images', () => {
+    await it('should not change good images', async () => {
         const expected =
             '/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJUAB//Z';
         const stream = createReadStream(join(__dirname, '1x1.jpeg'));
-        return expect(processor.process(stream)).resolves.toBe(expected);
+        const actual = await processor.process(stream);
+        equal(actual, expected);
     });
 
-    it('should convert bad images', () => {
+    await it('should convert bad images', async () => {
         const expected =
             '/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJUAB//Z';
         const stream = createReadStream(join(__dirname, '1x1.png'));
-        return expect(processor.process(stream)).resolves.toBe(expected);
+        const actual = await processor.process(stream);
+        equal(actual, expected);
     });
 });
