@@ -9,6 +9,7 @@
     "lint:fix": "eslint --fix .",
     "test": "node --require=ts-node/register/transpile-only --experimental-test-module-mocks test-runner.ts",
     "test:coverage": "c8 npm test",
+    "typecheck": "tsc --noEmit",
     "prepare": "npm run build"
   },
   "files": [

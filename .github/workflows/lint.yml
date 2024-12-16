@@ -1,0 +1,64 @@
+name: Linting
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NPM_CONFIG_FUND: '0'
+  NPM_CONFIG_AUDIT: '0'
+  SUPPRESS_SUPPORT: '1'
+  NO_UPDATE_NOTIFIER: 'true'
+
+jobs:
+  lint:
+    name: ESLint Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+            objects.githubusercontent.com:443
+            nodejs.org:443
+            registry.npmjs.org:443
+
+      - name: Run code style check
+        uses: myrotvorets/composite-actions/node-run-script@0365f64c55ccf287705b0190ded0d03c1edf8f4f
+        with:
+          script: lint
+
+  typecheck:
+    name: TypeScript Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+            objects.githubusercontent.com:443
+            nodejs.org:443
+            registry.npmjs.org:443
+
+      - name: Run type check
+        uses: myrotvorets/composite-actions/node-run-script@0365f64c55ccf287705b0190ded0d03c1edf8f4f
+        with:
+          script: typecheck
