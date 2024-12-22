@@ -39,6 +39,7 @@ jobs:
       - name: Run code style check
         uses: myrotvorets/composite-actions/node-run-script@27ab3af18ca12ee3e44e50e015ee74acd199d0dc
         with:
+          registry-url: https://npm.pkg.github.com
           script: lint
 
   typecheck:
@@ -63,4 +64,5 @@ jobs:
       - name: Run type check
         uses: myrotvorets/composite-actions/node-run-script@27ab3af18ca12ee3e44e50e015ee74acd199d0dc
         with:
+          registry-url: https://npm.pkg.github.com
           script: typecheck
