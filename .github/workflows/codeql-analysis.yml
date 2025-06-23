@@ -1,4 +1,4 @@
-name: CodeQL
+name: CodeQL Analysis
 
 on:
   push:
@@ -8,25 +8,29 @@ on:
     branches:
       - master
   schedule:
-    - cron: "17 8 * * 3"
+    - cron: '17 8 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   analyze:
-    name: Analyze
+    name: Static Code Analysis with CodeQL
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
     strategy:
       fail-fast: false
       matrix:
         language:
           - javascript
           - actions
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@1b05615854632b887b69ae1be8cbefe72d3ae423 # v2.6.0
+        uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
         with:
           disable-sudo: true
           egress-policy: block
@@ -37,19 +41,16 @@ jobs:
             objects.githubusercontent.com:443
             release-assets.githubusercontent.com:443
 
-      - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@ddccb873888234080b77e9bc2d4764d5ccaaccf9 # v2.21.9
+        uses: github/codeql-action/init@ce28f5bb42b7a9f2c824e633a3f6ee835bab6858 # v3.29.0
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@ddccb873888234080b77e9bc2d4764d5ccaaccf9 # v2.21.9
-
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@ddccb873888234080b77e9bc2d4764d5ccaaccf9 # v2.21.9
+        uses: github/codeql-action/analyze@ce28f5bb42b7a9f2c824e633a3f6ee835bab6858 # v3.29.0
         with:
           category: "/language:${{ matrix.language }}"
