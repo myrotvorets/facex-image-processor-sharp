@@ -47,7 +47,7 @@ void describe('ImageProcessorSharp', async () => {
                 format: 'jpeg',
                 isProgressive: false,
                 chromaSubsampling: '4:2:0',
-            }),
+            } as unknown as Metadata),
         );
 
         mockToBuffer.mock.mockImplementationOnce(() => Promise.resolve(Buffer.from('')));
@@ -69,7 +69,7 @@ void describe('ImageProcessorSharp', async () => {
             Promise.resolve({
                 format: 'png',
                 isProgressive: true,
-            }),
+            } as unknown as Metadata),
         );
 
         mockToBuffer.mock.mockImplementationOnce(() => Promise.resolve(Buffer.from('')));
