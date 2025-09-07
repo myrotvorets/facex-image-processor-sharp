@@ -34,7 +34,7 @@ export class ImageProcessorSharp implements IImageProcessor {
             return {
                 isJPEG: meta.format === 'jpeg',
                 chromaSubsampling: meta.chromaSubsampling ?? '',
-                isProgressive: !!meta.isProgressive,
+                isProgressive: meta.isProgressive,
             };
         } catch (e) {
             throw new BadImageError((e as Error).message);
